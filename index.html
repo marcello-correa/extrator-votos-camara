@@ -119,10 +119,7 @@
 
             try {
                 const infoPagina = await extrairInfoDaPagina(portalUrl);
-                if (!infoPagina) {
-                    throw new Error('Não foi possível extrair informações de data e descrição da página. Verifique a URL.');
-                }
-
+                
                 loaderText.textContent = '2/3: Buscando votações do dia...';
                 const votacaoId = await encontrarIdPorDataEDescricao(infoPagina);
                 if (!votacaoId) {
@@ -156,23 +153,24 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlText, "text/html");
 
-            // Extração de data mais robusta
-            const allListItems = doc.querySelectorAll('li');
-            const dataElement = Array.from(allListItems).find(li => li.textContent.includes('Data/Local'));
+            const dataElement = Array.from(doc.querySelectorAll('li')).find(li => li.textContent.includes('Data/Local'));
             const dataMatch = dataElement ? dataElement.textContent.match(/(\d{2})\/(\d{2})\/(\d{4})/) : null;
-            if (!dataMatch) return null;
+            if (!dataMatch) {
+                throw new Error('Não foi possível extrair a DATA da votação da página. A estrutura do site da Câmara pode ter mudado.');
+            }
             
             const [, dia, mes, ano] = dataMatch;
             const dataFormatada = `${ano}-${mes}-${dia}`;
 
-            // Extração de descrição mais robusta, baseada no parâmetro da URL
             const urlParams = new URL(url);
             const itemVotacaoId = urlParams.searchParams.get('itemVotacao');
             if (!itemVotacaoId) {
                  throw new Error('A URL fornecida não contém o parâmetro "itemVotacao", que é necessário para identificar a pauta.');
             }
             const selectedOption = doc.querySelector(`#dropDownReunioes option[value="${itemVotacaoId}"]`);
-            if (!selectedOption) return null;
+            if (!selectedOption) {
+                throw new Error(`Não foi possível extrair a DESCRIÇÃO da votação (item ${itemVotacaoId}) da página. A estrutura do site da Câmara pode ter mudado.`);
+            }
             const descricao = selectedOption.textContent.trim();
 
             return { dataVotacao: dataFormatada, descricao };
