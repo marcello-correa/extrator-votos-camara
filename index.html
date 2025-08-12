@@ -23,15 +23,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Esconde as setas do input de número */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-          -webkit-appearance: none; 
-          margin: 0; 
-        }
-        input[type=number] {
-          -moz-appearance: textfield;
-        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -39,72 +30,35 @@
         
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">Extrator de Votos da Câmara</h1>
-            <p class="text-gray-600 mt-2">Encontre uma votação por data e depois extraia os votos de cada deputado.</p>
+            <p class="text-gray-600 mt-2">Cole a URL da página de votação do portal da Câmara para extrair os dados.</p>
         </header>
 
-        <!-- PASSO 1: Encontrar Votação por Data -->
-        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Passo 1: Encontre uma Votação por Data</h2>
-            
-            <!-- Controles de busca por data -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                <div>
-                    <label for="dataInicio" class="block text-sm font-medium text-gray-700">Data Início</label>
-                    <input type="date" id="dataInicio" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="dataFim" class="block text-sm font-medium text-gray-700">Data Fim</label>
-                    <input type="date" id="dataFim" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="flex gap-2">
-                    <button id="hojeButton" class="w-full bg-gray-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-gray-600 transition-all">Hoje</button>
-                    <button id="buscarVotacoesButton" class="w-full bg-blue-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-700 transition-all">Buscar</button>
-                </div>
-            </div>
-
-            <!-- Feedback da busca -->
-            <div id="searchLoader" class="hidden flex justify-center items-center my-6">
-                <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                <p class="ml-4 text-gray-600">Buscando votações...</p>
-            </div>
-            <div id="searchError" class="hidden text-center my-6 p-4 bg-red-100 text-red-700 rounded-md"></div>
-
-            <!-- Resultados da Busca por Data -->
-            <div id="searchResults" class="hidden mt-6">
-                <div id="listaVotacoes" class="space-y-3">
-                    <!-- Conteúdo gerado via JS -->
-                </div>
-                <div id="pagination" class="flex justify-center items-center gap-2 mt-4">
-                    <!-- Paginação gerada via JS -->
-                </div>
-            </div>
-        </div>
-
-
-        <!-- PASSO 2: Extrair Votos por ID -->
+        <!-- Interface Principal -->
         <main class="bg-white p-6 rounded-lg shadow-md">
-             <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Passo 2: Extraia os Votos pelo ID</h2>
+             <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Buscar Votos por URL</h2>
             <div class="flex flex-col sm:flex-row gap-4 items-center">
                 <input 
-                    type="text" 
-                    id="votacaoId" 
-                    placeholder="Cole o ID aqui ou digite" 
+                    type="url" 
+                    id="portalUrlInput" 
+                    placeholder="https://www.camara.leg.br/presenca-comissoes/votacao-portal?..." 
                     class="flex-grow w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 >
                 <button 
-                    id="fetchButton" 
+                    id="fetchFromUrlButton" 
                     class="w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200"
                 >
-                    Buscar Votos
+                    Extrair Votos
                 </button>
             </div>
 
+            <!-- Feedback para o usuário -->
             <div id="loader" class="hidden flex justify-center items-center my-6">
                 <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                <p class="ml-4 text-gray-600">Buscando dados na API da Câmara...</p>
+                <p id="loader-text" class="ml-4 text-gray-600">Buscando dados...</p>
             </div>
             <div id="error-message" class="hidden text-center my-6 p-4 bg-red-100 text-red-700 rounded-md"></div>
 
+            <!-- Seção de Resultados -->
             <div id="results" class="hidden mt-8">
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
                     <h3 class="text-xl font-semibold text-gray-700">Resultados da Votação</h3>
@@ -138,206 +92,129 @@
     </div>
 
     <script>
-        // --- LÓGICA DO PASSO 1: BUSCA DE VOTAÇÕES ---
+        // --- LÓGICA DE ADAPTAÇÃO DE AMBIENTE ---
+        
+        const IS_VERCEL = window.location.hostname.endsWith('.vercel.app');
 
-        const dataInicioInput = document.getElementById('dataInicio');
-        const dataFimInput = document.getElementById('dataFim');
-        const hojeButton = document.getElementById('hojeButton');
-        const buscarVotacoesButton = document.getElementById('buscarVotacoesButton');
-        const searchLoader = document.getElementById('searchLoader');
-        const searchError = document.getElementById('searchError');
-        const searchResultsContainer = document.getElementById('searchResults');
-        const listaVotacoesDiv = document.getElementById('listaVotacoes');
-        const paginationDiv = document.getElementById('pagination');
-
-        let votacoesEncontradas = [];
-        let paginaAtual = 1;
-        const ITENS_POR_PAGINA = 5;
-
-        // Formata data para AAAA-MM-DD para o input[type=date]
-        const getHojeFormatado = () => {
-            const hoje = new Date();
-            return hoje.toISOString().split('T')[0];
-        };
-
-        hojeButton.addEventListener('click', () => {
-            const hoje = getHojeFormatado();
-            dataInicioInput.value = hoje;
-            dataFimInput.value = hoje;
-        });
-
-        buscarVotacoesButton.addEventListener('click', async () => {
-            const dataInicio = dataInicioInput.value;
-            const dataFim = dataFimInput.value;
-
-            if (!dataInicio || !dataFim) {
-                exibirErroBusca('Por favor, selecione data de início e fim.');
-                return;
+        const getApiUrl = (endpoint) => {
+            if (IS_VERCEL) {
+                return `/api${endpoint}`;
+            } else {
+                const baseUrl = 'https://dadosabertos.camara.leg.br/api/v2';
+                const fullUrl = `${baseUrl}${endpoint}`;
+                // CORREÇÃO: Trocando para um proxy mais estável para o ambiente de testes.
+                return `https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
             }
-
-            searchLoader.classList.remove('hidden');
-            searchError.classList.add('hidden');
-            searchResultsContainer.classList.add('hidden');
-            
-            try {
-                // CORREÇÃO: Removido o proxy e usando um caminho relativo.
-                // Isso funcionará em conjunto com o arquivo vercel.json.
-                const apiUrl = `/api/votacoes?dataInicio=${dataInicio}&dataFim=${dataFim}&ordem=DESC&ordenarPor=dataHoraVotacao&itens=100`;
-
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error(`Erro na API: ${response.status} - ${response.statusText}`);
-                
-                const data = await response.json();
-                votacoesEncontradas = data.dados;
-
-                if (votacoesEncontradas.length === 0) {
-                    exibirErroBusca('Nenhuma votação encontrada para o período selecionado.');
-                } else {
-                    paginaAtual = 1;
-                    renderizarPagina(paginaAtual);
-                    searchResultsContainer.classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error('Falha ao buscar votações:', error);
-                exibirErroBusca('Ocorreu um erro ao buscar os dados. Verifique a conexão ou tente novamente mais tarde.');
-            } finally {
-                searchLoader.classList.add('hidden');
-            }
-        });
-
-        const exibirErroBusca = (mensagem) => {
-            searchError.textContent = mensagem;
-            searchError.classList.remove('hidden');
+        };
+        
+        // Simplificado: esta função agora funciona para ambos os ambientes.
+        const parseApiResponse = async (response) => {
+            return response.json();
         };
 
-        const renderizarPagina = (pagina) => {
-            paginaAtual = pagina;
-            listaVotacoesDiv.innerHTML = '';
-            
-            const inicio = (pagina - 1) * ITENS_POR_PAGINA;
-            const fim = inicio + ITENS_POR_PAGINA;
-            const itensDaPagina = votacoesEncontradas.slice(inicio, fim);
-
-            if (itensDaPagina.length === 0 && pagina > 1) {
-                renderizarPagina(pagina - 1);
-                return;
-            }
-
-            itensDaPagina.forEach(votacao => {
-                const dataHora = new Date(votacao.dataHoraVotacao).toLocaleString('pt-BR');
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'p-3 border rounded-md bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3';
-                itemDiv.innerHTML = `
-                    <div class="flex-grow">
-                        <p class="font-bold text-gray-800">ID: ${votacao.id}</p>
-                        <p class="text-sm text-gray-600">${votacao.descricao}</p>
-                        <p class="text-xs text-gray-500 mt-1">Data: ${dataHora}</p>
-                    </div>
-                    <button data-id="${votacao.id}" class="usar-id-btn w-full sm:w-auto flex-shrink-0 bg-teal-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-teal-700 transition-all">
-                        Usar ID
-                    </button>
-                `;
-                listaVotacoesDiv.appendChild(itemDiv);
-            });
-
-            document.querySelectorAll('.usar-id-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.target.dataset.id;
-                    document.getElementById('votacaoId').value = id;
-                    document.getElementById('votacaoId').focus();
-                     window.scrollTo({
-                        top: document.getElementById('votacaoId').offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                });
-            });
-
-            renderizarControlesPaginacao();
-        };
-
-        const renderizarControlesPaginacao = () => {
-            paginationDiv.innerHTML = '';
-            const totalPaginas = Math.ceil(votacoesEncontradas.length / ITENS_POR_PAGINA);
-
-            if (totalPaginas <= 1) return;
-
-            const prevButton = document.createElement('button');
-            prevButton.innerText = 'Anterior';
-            prevButton.disabled = paginaAtual === 1;
-            prevButton.className = 'px-3 py-1 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed';
-            prevButton.addEventListener('click', () => renderizarPagina(paginaAtual - 1));
-            paginationDiv.appendChild(prevButton);
-
-            const pageIndicator = document.createElement('span');
-            pageIndicator.innerText = `Página ${paginaAtual} de ${totalPaginas}`;
-            pageIndicator.className = 'px-3 py-1 text-sm';
-            paginationDiv.appendChild(pageIndicator);
-            
-            const nextButton = document.createElement('button');
-            nextButton.innerText = 'Próxima';
-            nextButton.disabled = paginaAtual === totalPaginas;
-            nextButton.className = 'px-3 py-1 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed';
-            nextButton.addEventListener('click', () => renderizarPagina(paginaAtual + 1));
-            paginationDiv.appendChild(nextButton);
-        };
-
-
-        // --- LÓGICA DO PASSO 2: EXTRAÇÃO DE VOTOS ---
-
-        const fetchButton = document.getElementById('fetchButton');
-        const downloadButton = document.getElementById('downloadButton');
-        const votacaoIdInput = document.getElementById('votacaoId');
-        const tableBody = document.getElementById('votos-table-body');
+        // --- ELEMENTOS DA UI ---
+        const fetchFromUrlButton = document.getElementById('fetchFromUrlButton');
+        const portalUrlInput = document.getElementById('portalUrlInput');
         const loader = document.getElementById('loader');
+        const loaderText = document.getElementById('loader-text');
         const errorMessage = document.getElementById('error-message');
         const resultsSection = document.getElementById('results');
+        const tableBody = document.getElementById('votos-table-body');
+        const downloadButton = document.getElementById('downloadButton');
 
-        let dadosVotacao = [];
+        let dadosVotacao = []; // Armazena os dados para o download
 
-        const buscarDadosVotos = async () => {
-            const idVotacao = votacaoIdInput.value.trim();
-            if (!idVotacao) {
-                exibirErroVotos('Por favor, insira um ID de votação.');
+        // --- FUNÇÕES PRINCIPAIS ---
+
+        /**
+         * Inicia o processo: pega a URL, encontra o ID da votação e busca os votos.
+         */
+        const handleFetchFromUrl = async () => {
+            const portalUrl = portalUrlInput.value.trim();
+            if (!portalUrl) {
+                exibirErro('Por favor, insira uma URL válida do portal da Câmara.');
                 return;
             }
 
-            loader.classList.remove('hidden');
+            // Reseta a UI
             resultsSection.classList.add('hidden');
             errorMessage.classList.add('hidden');
-            tableBody.innerHTML = '';
-            dadosVotacao = [];
+            loaderText.textContent = 'Lendo a página do portal...';
+            loader.classList.remove('hidden');
 
             try {
-                // CORREÇÃO: Removido o proxy e usando um caminho relativo.
-                // Isso funcionará em conjunto com o arquivo vercel.json.
-                const apiUrl = `/api/votacoes/${idVotacao}/votos`;
-
-                const response = await fetch(apiUrl);
-
-                if (!response.ok) {
-                    throw new Error(`Erro na API: ${response.status} - ${response.statusText}. Verifique se o ID está correto.`);
+                const votacaoId = await extrairVotacaoIdDaPagina(portalUrl);
+                if (!votacaoId) {
+                    throw new Error('Não foi possível encontrar o ID da votação na página. Verifique se a URL está correta e se a página contém um link para os "Dados Abertos".');
                 }
                 
-                const data = await response.json();
-                dadosVotacao = data.dados;
-
-                if (dadosVotacao.length === 0) {
-                    exibirErroVotos('Nenhum dado encontrado para esta votação. O ID pode estar incorreto ou a votação não possui votos registrados.');
-                    return;
-                }
-
-                renderizarTabelaVotos(dadosVotacao);
-                resultsSection.classList.remove('hidden');
+                loaderText.textContent = 'Buscando dados dos votos...';
+                await buscarDadosVotos(votacaoId);
 
             } catch (error) {
-                console.error('Falha ao buscar dados dos votos:', error);
-                exibirErroVotos('Ocorreu um erro ao buscar os dados dos votos. Verifique a conexão ou tente novamente mais tarde.');
+                console.error('Falha no processo:', error);
+                 if (error.message.includes('Failed to fetch')) {
+                    exibirErro('Erro de rede. O serviço de proxy pode estar temporariamente indisponível. Por favor, tente novamente mais tarde.');
+                } else {
+                    exibirErro(error.message);
+                }
             } finally {
                 loader.classList.add('hidden');
             }
         };
-        
-        const exibirErroVotos = (mensagem) => {
+
+        /**
+         * "Raspa" a página do portal da Câmara para encontrar o ID da votação da API.
+         * @param {string} url - A URL da página de votação do portal.
+         * @returns {Promise<string|null>} O ID da votação ou null se não for encontrado.
+         */
+        const extrairVotacaoIdDaPagina = async (url) => {
+            // Usa um proxy para acessar o conteúdo da página externa
+            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+            const response = await fetch(proxyUrl);
+            if (!response.ok) {
+                throw new Error(`Não foi possível acessar a URL do portal via proxy (Status: ${response.status}).`);
+            }
+            const html = await response.text();
+
+            if (!html) {
+                 throw new Error('O serviço de proxy não retornou o conteúdo da página. Pode estar temporariamente fora do ar.');
+            }
+
+            // A regex procura pelo link que leva à API de Dados Abertos para encontrar o ID correto.
+            const regex = /https:\/\/dadosabertos\.camara\.leg\.br\/api\/v2\/votacoes\/([0-9-]+)/;
+            const match = html.match(regex);
+            
+            return match ? match[1] : null;
+        };
+
+        /**
+         * Busca os dados detalhados dos votos usando o ID da API.
+         * @param {string} votacaoId - O ID da votação encontrado.
+         */
+        const buscarDadosVotos = async (votacaoId) => {
+            const endpoint = `/votacoes/${votacaoId}/votos`;
+            const apiUrl = getApiUrl(endpoint);
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+                throw new Error(`Erro na API de Dados Abertos: ${response.status}`);
+            }
+            
+            const data = await parseApiResponse(response);
+            dadosVotacao = data.dados;
+
+            if (!dadosVotacao || dadosVotacao.length === 0) {
+                throw new Error('Nenhum voto encontrado para esta votação.');
+            }
+
+            renderizarTabelaVotos(dadosVotacao);
+            resultsSection.classList.remove('hidden');
+        };
+
+        // --- FUNÇÕES AUXILIARES ---
+
+        const exibirErro = (mensagem) => {
             errorMessage.textContent = mensagem;
             errorMessage.classList.remove('hidden');
             resultsSection.classList.add('hidden');
@@ -383,16 +260,17 @@
 
             worksheet["!cols"] = [ { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 5 } ];
             
-            const idVotacao = votacaoIdInput.value.trim();
-            XLSX.writeFile(workbook, `votacao_${idVotacao || 'export'}.xlsx`);
+            const idVotacao = portalUrlInput.value.split('itemVotacao=')[1] || 'export';
+            XLSX.writeFile(workbook, `votacao_${idVotacao}.xlsx`);
         };
 
-        fetchButton.addEventListener('click', buscarDadosVotos);
+        // --- EVENT LISTENERS ---
+        fetchFromUrlButton.addEventListener('click', handleFetchFromUrl);
         downloadButton.addEventListener('click', baixarPlanilha);
         
-        votacaoIdInput.addEventListener('keyup', (event) => {
+        portalUrlInput.addEventListener('keyup', (event) => {
             if (event.key === 'Enter') {
-                buscarDadosVotos();
+                handleFetchFromUrl();
             }
         });
 

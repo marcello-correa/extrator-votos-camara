@@ -1,9 +1,12 @@
 {
-    "rewrites": [
-      {
-        "source": "/api/:path*",
-        "destination": "https://dadosabertos.camara.leg.br/api/v2/:path*"
-      }
-    ]
-  }
-  
+  "rewrites": [
+    {
+      "source": "/api/votacoes",
+      "destination": "https://dadosabertos.camara.leg.br/api/v2/votacoes"
+    },
+    {
+      "source": "/api/votacoes/:id/votos",
+      "destination": "https://dadosabertos.camara.leg.br/api/v2/votacoes/:id/votos"
+    }
+  ]
+}
