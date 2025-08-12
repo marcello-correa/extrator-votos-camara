@@ -1,0 +1,427 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2821
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red109\green109\blue109;\red236\green241\blue247;\red251\green0\blue7;
+\red0\green0\blue0;\red42\green42\blue42;\red107\green0\blue1;\red0\green0\blue255;\red77\green80\blue85;
+\red9\green60\blue148;\red19\green118\blue70;\red111\green14\blue195;\red24\green112\blue43;\red164\green69\blue11;
+\red14\green110\blue109;}
+{\*\expandedcolortbl;;\cssrgb\c50196\c50196\c50196;\cssrgb\c94118\c95686\c97647;\cssrgb\c100000\c0\c0;
+\cssrgb\c0\c0\c0;\cssrgb\c21961\c21961\c21961;\cssrgb\c50196\c0\c0;\cssrgb\c0\c0\c100000;\cssrgb\c37255\c38824\c40784;
+\cssrgb\c1569\c31765\c64706;\cssrgb\c3529\c52549\c34510;\cssrgb\c51765\c18824\c80784;\cssrgb\c9412\c50196\c21961;\cssrgb\c70980\c34902\c3137;
+\cssrgb\c0\c50196\c50196;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 <!DOCTYPE\cf4 \strokec4  html\cf2 \strokec2 >\cf0 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 <\cf7 \strokec7 html\cf0 \strokec5  \cf4 \strokec4 lang\cf6 \strokec6 =\cf8 \strokec8 "pt-BR"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cf6 \cb3 \strokec6 <\cf7 \strokec7 head\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3     \cf6 \strokec6 <\cf7 \strokec7 meta\cf0 \strokec5  \cf4 \strokec4 charset\cf6 \strokec6 =\cf8 \strokec8 "UTF-8"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3     \cf6 \strokec6 <\cf7 \strokec7 meta\cf0 \strokec5  \cf4 \strokec4 name\cf6 \strokec6 =\cf8 \strokec8 "viewport"\cf0 \strokec5  \cf4 \strokec4 content\cf6 \strokec6 =\cf8 \strokec8 "width=device-width, initial-scale=1.0"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3     \cf6 \strokec6 <\cf7 \strokec7 title\cf6 \strokec6 >\cf0 \strokec5 Extrator de Votos - C\'e2mara dos Deputados\cf6 \strokec6 </\cf7 \strokec7 title\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3     \cf9 \strokec9 <!-- Tailwind CSS para um design limpo e responsivo -->\cf0 \cb1 \strokec5 \
+\cb3     \cf6 \strokec6 <\cf7 \strokec7 script\cf0 \strokec5  \cf4 \strokec4 src\cf6 \strokec6 =\cf8 \strokec8 "https://cdn.tailwindcss.com"\cf6 \strokec6 ></\cf7 \strokec7 script\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3     \cf9 \strokec9 <!-- Biblioteca SheetJS (xlsx) para gerar arquivos Excel -->\cf0 \cb1 \strokec5 \
+\cb3     \cf6 \strokec6 <\cf7 \strokec7 script\cf0 \strokec5  \cf4 \strokec4 src\cf6 \strokec6 =\cf8 \strokec8 "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"\cf6 \strokec6 ></\cf7 \strokec7 script\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3     \cf6 \strokec6 <\cf7 \strokec7 style\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3         \cf9 \strokec9 /* Estilo para o spinner de carregamento */\cf0 \cb1 \strokec5 \
+\cb3         \cf7 \strokec7 .loader\cf0 \strokec5  \{\cb1 \
+\cb3             \cf4 \strokec4 border-top-color:\cf0 \strokec5  \cf10 \strokec10 #3498db\cf0 \strokec5 ;\cb1 \
+\cb3             \cf4 \strokec4 -webkit-animation:\cf0 \strokec5  \cf10 \strokec10 spinner\cf0 \strokec5  \cf11 \strokec11 1.5s\cf0 \strokec5  \cf10 \strokec10 linear\cf0 \strokec5  \cf10 \strokec10 infinite\cf0 \strokec5 ;\cb1 \
+\cb3             \cf4 \strokec4 animation:\cf0 \strokec5  \cf10 \strokec10 spinner\cf0 \strokec5  \cf11 \strokec11 1.5s\cf0 \strokec5  \cf10 \strokec10 linear\cf0 \strokec5  \cf10 \strokec10 infinite\cf0 \strokec5 ;\cb1 \
+\cb3         \}\cb1 \
+\cb3         \cf12 \strokec12 @-webkit-keyframes\cf0 \strokec5  \cf10 \strokec10 spinner\cf0 \strokec5  \{\cb1 \
+\cb3             \cf11 \strokec11 0%\cf0 \strokec5  \{ \cf4 \strokec4 -webkit-transform:\cf0 \strokec5  \cf10 \strokec10 rotate(\cf11 \strokec11 0deg\cf10 \strokec10 )\cf0 \strokec5 ; \}\cb1 \
+\cb3             \cf11 \strokec11 100%\cf0 \strokec5  \{ \cf4 \strokec4 -webkit-transform:\cf0 \strokec5  \cf10 \strokec10 rotate(\cf11 \strokec11 360deg\cf10 \strokec10 )\cf0 \strokec5 ; \}\cb1 \
+\cb3         \}\cb1 \
+\cb3         \cf12 \strokec12 @keyframes\cf0 \strokec5  \cf10 \strokec10 spinner\cf0 \strokec5  \{\cb1 \
+\cb3             \cf11 \strokec11 0%\cf0 \strokec5  \{ \cf4 \strokec4 transform:\cf0 \strokec5  \cf10 \strokec10 rotate(\cf11 \strokec11 0deg\cf10 \strokec10 )\cf0 \strokec5 ; \}\cb1 \
+\cb3             \cf11 \strokec11 100%\cf0 \strokec5  \{ \cf4 \strokec4 transform:\cf0 \strokec5  \cf10 \strokec10 rotate(\cf11 \strokec11 360deg\cf10 \strokec10 )\cf0 \strokec5 ; \}\cb1 \
+\cb3         \}\cb1 \
+\cb3         \cf9 \strokec9 /* Esconde as setas do input de n\'famero */\cf0 \cb1 \strokec5 \
+\cb3         \cf7 \strokec7 input\cf0 \strokec5 [\cf10 \strokec10 type\cf0 \strokec5 =\cf10 \strokec10 number\cf0 \strokec5 ]\cf7 \strokec7 ::-webkit-inner-spin-button\cf0 \strokec5 , \cb1 \
+\cb3         \cf7 \strokec7 input\cf0 \strokec5 [\cf10 \strokec10 type\cf0 \strokec5 =\cf10 \strokec10 number\cf0 \strokec5 ]\cf7 \strokec7 ::-webkit-outer-spin-button\cf0 \strokec5  \{ \cb1 \
+\cb3           \cf4 \strokec4 -webkit-appearance:\cf0 \strokec5  \cf10 \strokec10 none\cf0 \strokec5 ; \cb1 \
+\cb3           \cf4 \strokec4 margin:\cf0 \strokec5  \cf11 \strokec11 0\cf0 \strokec5 ; \cb1 \
+\cb3         \}\cb1 \
+\cb3         \cf7 \strokec7 input\cf0 \strokec5 [\cf10 \strokec10 type\cf0 \strokec5 =\cf10 \strokec10 number\cf0 \strokec5 ] \{\cb1 \
+\cb3           \cf4 \strokec4 -moz-appearance:\cf0 \strokec5  \cf10 \strokec10 textfield\cf0 \strokec5 ;\cb1 \
+\cb3         \}\cb1 \
+\cb3     \cf6 \strokec6 </\cf7 \strokec7 style\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 </\cf7 \strokec7 head\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cf6 \cb3 \strokec6 <\cf7 \strokec7 body\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "bg-gray-100 font-sans"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3     \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3         \cb1 \
+\cb3         \cf6 \strokec6 <\cf7 \strokec7 header\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "text-center mb-8"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 h1\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "text-3xl sm:text-4xl font-bold text-gray-800"\cf6 \strokec6 >\cf0 \strokec5 Extrator de Votos da C\'e2mara\cf6 \strokec6 </\cf7 \strokec7 h1\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 p\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "text-gray-600 mt-2"\cf6 \strokec6 >\cf0 \strokec5 Encontre uma vota\'e7\'e3o por data e depois extraia os votos de cada deputado.\cf6 \strokec6 </\cf7 \strokec7 p\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3         \cf6 \strokec6 </\cf7 \strokec7 header\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+\cb3         \cf9 \strokec9 <!-- PASSO 1: Encontrar Vota\'e7\'e3o por Data -->\cf0 \cb1 \strokec5 \
+\cb3         \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "bg-white p-6 rounded-lg shadow-md mb-8"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 h2\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "text-2xl font-semibold text-gray-700 mb-4 border-b pb-2"\cf6 \strokec6 >\cf0 \strokec5 Passo 1: Encontre uma Vota\'e7\'e3o por Data\cf6 \strokec6 </\cf7 \strokec7 h2\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cb1 \
+\cb3             \cf9 \strokec9 <!-- Controles de busca por data -->\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "grid grid-cols-1 md:grid-cols-3 gap-4 items-end"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 label\cf0 \strokec5  \cf4 \strokec4 for\cf6 \strokec6 =\cf8 \strokec8 "dataInicio"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "block text-sm font-medium text-gray-700"\cf6 \strokec6 >\cf0 \strokec5 Data In\'edcio\cf6 \strokec6 </\cf7 \strokec7 label\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 input\cf0 \strokec5  \cf4 \strokec4 type\cf6 \strokec6 =\cf8 \strokec8 "date"\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "dataInicio"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 label\cf0 \strokec5  \cf4 \strokec4 for\cf6 \strokec6 =\cf8 \strokec8 "dataFim"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "block text-sm font-medium text-gray-700"\cf6 \strokec6 >\cf0 \strokec5 Data Fim\cf6 \strokec6 </\cf7 \strokec7 label\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 input\cf0 \strokec5  \cf4 \strokec4 type\cf6 \strokec6 =\cf8 \strokec8 "date"\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "dataFim"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "flex gap-2"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 button\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "hojeButton"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "w-full bg-gray-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-gray-600 transition-all"\cf6 \strokec6 >\cf0 \strokec5 Hoje\cf6 \strokec6 </\cf7 \strokec7 button\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 button\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "buscarVotacoesButton"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "w-full bg-blue-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-700 transition-all"\cf6 \strokec6 >\cf0 \strokec5 Buscar\cf6 \strokec6 </\cf7 \strokec7 button\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+\cb3             \cf9 \strokec9 <!-- Feedback da busca -->\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "searchLoader"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "hidden flex justify-center items-center my-6"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"\cf6 \strokec6 ></\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 p\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "ml-4 text-gray-600"\cf6 \strokec6 >\cf0 \strokec5 Buscando vota\'e7\'f5es...\cf6 \strokec6 </\cf7 \strokec7 p\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "searchError"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "hidden text-center my-6 p-4 bg-red-100 text-red-700 rounded-md"\cf6 \strokec6 ></\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+\cb3             \cf9 \strokec9 <!-- Resultados da Busca por Data -->\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "searchResults"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "hidden mt-6"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "listaVotacoes"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "space-y-3"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf9 \strokec9 <!-- Conte\'fado gerado via JS -->\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "pagination"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "flex justify-center items-center gap-2 mt-4"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf9 \strokec9 <!-- Pagina\'e7\'e3o gerada via JS -->\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3         \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+\
+\cb3         \cf9 \strokec9 <!-- PASSO 2: Extrair Votos por ID -->\cf0 \cb1 \strokec5 \
+\cb3         \cf6 \strokec6 <\cf7 \strokec7 main\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "bg-white p-6 rounded-lg shadow-md"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3              \cf6 \strokec6 <\cf7 \strokec7 h2\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "text-2xl font-semibold text-gray-700 mb-4 border-b pb-2"\cf6 \strokec6 >\cf0 \strokec5 Passo 2: Extraia os Votos pelo ID\cf6 \strokec6 </\cf7 \strokec7 h2\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "flex flex-col sm:flex-row gap-4 items-center"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 input\cf0 \strokec5  \cb1 \
+\cb3                     \cf4 \strokec4 type\cf6 \strokec6 =\cf8 \strokec8 "text"\cf0 \strokec5  \cb1 \
+\cb3                     \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "votacaoId"\cf0 \strokec5  \cb1 \
+\cb3                     \cf4 \strokec4 placeholder\cf6 \strokec6 =\cf8 \strokec8 "Cole o ID aqui ou digite"\cf0 \strokec5  \cb1 \
+\cb3                     \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "flex-grow w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 button\cf0 \strokec5  \cb1 \
+\cb3                     \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "fetchButton"\cf0 \strokec5  \cb1 \
+\cb3                     \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200"\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     Buscar Votos\cb1 \
+\cb3                 \cf6 \strokec6 </\cf7 \strokec7 button\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "loader"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "hidden flex justify-center items-center my-6"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"\cf6 \strokec6 ></\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 p\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "ml-4 text-gray-600"\cf6 \strokec6 >\cf0 \strokec5 Buscando dados na API da C\'e2mara...\cf6 \strokec6 </\cf7 \strokec7 p\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "error-message"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "hidden text-center my-6 p-4 bg-red-100 text-red-700 rounded-md"\cf6 \strokec6 ></\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "results"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "hidden mt-8"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "flex flex-wrap justify-between items-center gap-4 mb-4"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 h3\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "text-xl font-semibold text-gray-700"\cf6 \strokec6 >\cf0 \strokec5 Resultados da Vota\'e7\'e3o\cf6 \strokec6 </\cf7 \strokec7 h3\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 button\cf0 \strokec5  \cb1 \
+\cb3                         \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "downloadButton"\cf0 \cb1 \strokec5 \
+\cb3                         \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "bg-green-600 text-white font-semibold px-5 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-all duration-200"\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                         Baixar Planilha (XLSX)\cb1 \
+\cb3                     \cf6 \strokec6 </\cf7 \strokec7 button\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cb1 \
+\cb3                 \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "overflow-x-auto"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 <\cf7 \strokec7 table\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "min-w-full bg-white border border-gray-200 rounded-lg"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                         \cf6 \strokec6 <\cf7 \strokec7 thead\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "bg-gray-50"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                             \cf6 \strokec6 <\cf7 \strokec7 tr\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                                 \cf6 \strokec6 <\cf7 \strokec7 th\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"\cf6 \strokec6 >\cf0 \strokec5 Nome\cf6 \strokec6 </\cf7 \strokec7 th\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                                 \cf6 \strokec6 <\cf7 \strokec7 th\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"\cf6 \strokec6 >\cf0 \strokec5 Voto\cf6 \strokec6 </\cf7 \strokec7 th\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                                 \cf6 \strokec6 <\cf7 \strokec7 th\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"\cf6 \strokec6 >\cf0 \strokec5 Partido\cf6 \strokec6 </\cf7 \strokec7 th\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                                 \cf6 \strokec6 <\cf7 \strokec7 th\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"\cf6 \strokec6 >\cf0 \strokec5 UF\cf6 \strokec6 </\cf7 \strokec7 th\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                             \cf6 \strokec6 </\cf7 \strokec7 tr\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                         \cf6 \strokec6 </\cf7 \strokec7 thead\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                         \cf6 \strokec6 <\cf7 \strokec7 tbody\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "votos-table-body"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "divide-y divide-gray-200"\cf6 \strokec6 ></\cf7 \strokec7 tbody\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                     \cf6 \strokec6 </\cf7 \strokec7 table\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3                 \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3         \cf6 \strokec6 </\cf7 \strokec7 main\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+\cb3         \cf6 \strokec6 <\cf7 \strokec7 footer\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "text-center mt-8 text-sm text-gray-500"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3             \cf6 \strokec6 <\cf7 \strokec7 p\cf6 \strokec6 >\cf0 \strokec5 Desenvolvido como um projeto de c\'f3digo aberto. Utiliza a \cf6 \strokec6 <\cf7 \strokec7 a\cf0 \strokec5  \cf4 \strokec4 href\cf6 \strokec6 =\cf8 \strokec8 "https://dadosabertos.camara.leg.br"\cf0 \strokec5  \cf4 \strokec4 target\cf6 \strokec6 =\cf8 \strokec8 "_blank"\cf0 \strokec5  \cf4 \strokec4 class\cf6 \strokec6 =\cf8 \strokec8 "text-blue-600 hover:underline"\cf6 \strokec6 >\cf0 \strokec5 API de Dados Abertos da C\'e2mara dos Deputados\cf6 \strokec6 </\cf7 \strokec7 a\cf6 \strokec6 >\cf0 \strokec5 .\cf6 \strokec6 </\cf7 \strokec7 p\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3         \cf6 \strokec6 </\cf7 \strokec7 footer\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3     \cf6 \strokec6 </\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+\cb3     \cf6 \strokec6 <\cf7 \strokec7 script\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cb3         \cf9 \strokec9 // --- L\'d3GICA DO PASSO 1: BUSCA DE VOTA\'c7\'d5ES ---\cf0 \cb1 \strokec5 \
+\
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  dataInicioInput = document.getElementById(\cf13 \strokec13 'dataInicio'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  dataFimInput = document.getElementById(\cf13 \strokec13 'dataFim'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  hojeButton = document.getElementById(\cf13 \strokec13 'hojeButton'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  buscarVotacoesButton = document.getElementById(\cf13 \strokec13 'buscarVotacoesButton'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  searchLoader = document.getElementById(\cf13 \strokec13 'searchLoader'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  searchError = document.getElementById(\cf13 \strokec13 'searchError'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  searchResultsContainer = document.getElementById(\cf13 \strokec13 'searchResults'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  listaVotacoesDiv = document.getElementById(\cf13 \strokec13 'listaVotacoes'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  paginationDiv = document.getElementById(\cf13 \strokec13 'pagination'\cf0 \strokec5 );\cb1 \
+\
+\cb3         \cf12 \strokec12 let\cf0 \strokec5  votacoesEncontradas = [];\cb1 \
+\cb3         \cf12 \strokec12 let\cf0 \strokec5  paginaAtual = \cf14 \strokec14 1\cf0 \strokec5 ;\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  \cf15 \strokec15 ITENS_POR_PAGINA\cf0 \strokec5  = \cf14 \strokec14 5\cf0 \strokec5 ;\cb1 \
+\
+\cb3         \cf9 \strokec9 // Formata data para AAAA-MM-DD para o input[type=date]\cf0 \cb1 \strokec5 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  getHojeFormatado = () => \{\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  hoje = \cf12 \strokec12 new\cf0 \strokec5  \cf15 \strokec15 Date\cf0 \strokec5 ();\cb1 \
+\cb3             \cf12 \strokec12 return\cf0 \strokec5  hoje.toISOString().split(\cf13 \strokec13 'T'\cf0 \strokec5 )[\cf14 \strokec14 0\cf0 \strokec5 ];\cb1 \
+\cb3         \};\cb1 \
+\
+\cb3         hojeButton.addEventListener(\cf13 \strokec13 'click'\cf0 \strokec5 , () => \{\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  hoje = getHojeFormatado();\cb1 \
+\cb3             dataInicioInput.value = hoje;\cb1 \
+\cb3             dataFimInput.value = hoje;\cb1 \
+\cb3         \});\cb1 \
+\
+\cb3         buscarVotacoesButton.addEventListener(\cf13 \strokec13 'click'\cf0 \strokec5 , \cf12 \strokec12 async\cf0 \strokec5  () => \{\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  dataInicio = dataInicioInput.value;\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  dataFim = dataFimInput.value;\cb1 \
+\
+\cb3             \cf12 \strokec12 if\cf0 \strokec5  (!dataInicio || !dataFim) \{\cb1 \
+\cb3                 exibirErroBusca(\cf13 \strokec13 'Por favor, selecione data de in\'edcio e fim.'\cf0 \strokec5 );\cb1 \
+\cb3                 \cf12 \strokec12 return\cf0 \strokec5 ;\cb1 \
+\cb3             \}\cb1 \
+\
+\cb3             searchLoader.classList.remove(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             searchError.classList.add(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             searchResultsContainer.classList.add(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             \cb1 \
+\cb3             \cf12 \strokec12 try\cf0 \strokec5  \{\cb1 \
+\cb3                 \cf9 \strokec9 // CORRE\'c7\'c3O: Removido o proxy e usando um caminho relativo.\cf0 \cb1 \strokec5 \
+\cb3                 \cf9 \strokec9 // Isso funcionar\'e1 em conjunto com o arquivo vercel.json.\cf0 \cb1 \strokec5 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  apiUrl = \cf13 \strokec13 `/api/votacoes?dataInicio=\cf0 \strokec5 $\{dataInicio\}\cf13 \strokec13 &dataFim=\cf0 \strokec5 $\{dataFim\}\cf13 \strokec13 &ordem=DESC&ordenarPor=dataHoraVotacao&itens=100`\cf0 \strokec5 ;\cb1 \
+\
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  response = \cf12 \strokec12 await\cf0 \strokec5  fetch(apiUrl);\cb1 \
+\cb3                 \cf12 \strokec12 if\cf0 \strokec5  (!response.ok) \cf12 \strokec12 throw\cf0 \strokec5  \cf12 \strokec12 new\cf0 \strokec5  \cf15 \strokec15 Error\cf0 \strokec5 (\cf13 \strokec13 `Erro na API: \cf0 \strokec5 $\{response.status\}\cf13 \strokec13  - \cf0 \strokec5 $\{response.statusText\}\cf13 \strokec13 `\cf0 \strokec5 );\cb1 \
+\cb3                 \cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  data = \cf12 \strokec12 await\cf0 \strokec5  response.json();\cb1 \
+\cb3                 votacoesEncontradas = data.dados;\cb1 \
+\
+\cb3                 \cf12 \strokec12 if\cf0 \strokec5  (votacoesEncontradas.length === \cf14 \strokec14 0\cf0 \strokec5 ) \{\cb1 \
+\cb3                     exibirErroBusca(\cf13 \strokec13 'Nenhuma vota\'e7\'e3o encontrada para o per\'edodo selecionado.'\cf0 \strokec5 );\cb1 \
+\cb3                 \} \cf12 \strokec12 else\cf0 \strokec5  \{\cb1 \
+\cb3                     paginaAtual = \cf14 \strokec14 1\cf0 \strokec5 ;\cb1 \
+\cb3                     renderizarPagina(paginaAtual);\cb1 \
+\cb3                     searchResultsContainer.classList.remove(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3                 \}\cb1 \
+\cb3             \} \cf12 \strokec12 catch\cf0 \strokec5  (error) \{\cb1 \
+\cb3                 console.error(\cf13 \strokec13 'Falha ao buscar vota\'e7\'f5es:'\cf0 \strokec5 , error);\cb1 \
+\cb3                 exibirErroBusca(\cf13 \strokec13 'Ocorreu um erro ao buscar os dados. Verifique a conex\'e3o ou tente novamente mais tarde.'\cf0 \strokec5 );\cb1 \
+\cb3             \} \cf12 \strokec12 finally\cf0 \strokec5  \{\cb1 \
+\cb3                 searchLoader.classList.add(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             \}\cb1 \
+\cb3         \});\cb1 \
+\
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  exibirErroBusca = (mensagem) => \{\cb1 \
+\cb3             searchError.textContent = mensagem;\cb1 \
+\cb3             searchError.classList.remove(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3         \};\cb1 \
+\
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  renderizarPagina = (pagina) => \{\cb1 \
+\cb3             paginaAtual = pagina;\cb1 \
+\cb3             listaVotacoesDiv.innerHTML = \cf13 \strokec13 ''\cf0 \strokec5 ;\cb1 \
+\cb3             \cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  inicio = (pagina - \cf14 \strokec14 1\cf0 \strokec5 ) * \cf15 \strokec15 ITENS_POR_PAGINA\cf0 \strokec5 ;\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  fim = inicio + \cf15 \strokec15 ITENS_POR_PAGINA\cf0 \strokec5 ;\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  itensDaPagina = votacoesEncontradas.slice(inicio, fim);\cb1 \
+\
+\cb3             \cf12 \strokec12 if\cf0 \strokec5  (itensDaPagina.length === \cf14 \strokec14 0\cf0 \strokec5  && pagina > \cf14 \strokec14 1\cf0 \strokec5 ) \{\cb1 \
+\cb3                 renderizarPagina(pagina - \cf14 \strokec14 1\cf0 \strokec5 );\cb1 \
+\cb3                 \cf12 \strokec12 return\cf0 \strokec5 ;\cb1 \
+\cb3             \}\cb1 \
+\
+\cb3             itensDaPagina.forEach(votacao => \{\cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  dataHora = \cf12 \strokec12 new\cf0 \strokec5  \cf15 \strokec15 Date\cf0 \strokec5 (votacao.dataHoraVotacao).toLocaleString(\cf13 \strokec13 'pt-BR'\cf0 \strokec5 );\cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  itemDiv = document.createElement(\cf13 \strokec13 'div'\cf0 \strokec5 );\cb1 \
+\cb3                 itemDiv.className = \cf13 \strokec13 'p-3 border rounded-md bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3'\cf0 \strokec5 ;\cb1 \
+\cb3                 itemDiv.innerHTML = \cf13 \strokec13 `\cf0 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf13 \cb3 \strokec13                     <div class="flex-grow">\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                         <p class="font-bold text-gray-800">ID: \cf0 \strokec5 $\{votacao.id\}\cf13 \strokec13 </p>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                         <p class="text-sm text-gray-600">\cf0 \strokec5 $\{votacao.descricao\}\cf13 \strokec13 </p>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                         <p class="text-xs text-gray-500 mt-1">Data: \cf0 \strokec5 $\{dataHora\}\cf13 \strokec13 </p>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                     </div>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                     <button data-id="\cf0 \strokec5 $\{votacao.id\}\cf13 \strokec13 " class="usar-id-btn w-full sm:w-auto flex-shrink-0 bg-teal-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-teal-700 transition-all">\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                         Usar ID\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                     </button>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                 `\cf0 \strokec5 ;\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3                 listaVotacoesDiv.appendChild(itemDiv);\cb1 \
+\cb3             \});\cb1 \
+\
+\cb3             document.querySelectorAll(\cf13 \strokec13 '.usar-id-btn'\cf0 \strokec5 ).forEach(btn => \{\cb1 \
+\cb3                 btn.addEventListener(\cf13 \strokec13 'click'\cf0 \strokec5 , (e) => \{\cb1 \
+\cb3                     \cf12 \strokec12 const\cf0 \strokec5  id = e.target.dataset.id;\cb1 \
+\cb3                     document.getElementById(\cf13 \strokec13 'votacaoId'\cf0 \strokec5 ).value = id;\cb1 \
+\cb3                     document.getElementById(\cf13 \strokec13 'votacaoId'\cf0 \strokec5 ).focus();\cb1 \
+\cb3                      window.scrollTo(\{\cb1 \
+\cb3                         top: document.getElementById(\cf13 \strokec13 'votacaoId'\cf0 \strokec5 ).offsetTop - \cf14 \strokec14 100\cf0 \strokec5 ,\cb1 \
+\cb3                         behavior: \cf13 \strokec13 'smooth'\cf0 \cb1 \strokec5 \
+\cb3                     \});\cb1 \
+\cb3                 \});\cb1 \
+\cb3             \});\cb1 \
+\
+\cb3             renderizarControlesPaginacao();\cb1 \
+\cb3         \};\cb1 \
+\
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  renderizarControlesPaginacao = () => \{\cb1 \
+\cb3             paginationDiv.innerHTML = \cf13 \strokec13 ''\cf0 \strokec5 ;\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  totalPaginas = \cf15 \strokec15 Math\cf0 \strokec5 .ceil(votacoesEncontradas.length / \cf15 \strokec15 ITENS_POR_PAGINA\cf0 \strokec5 );\cb1 \
+\
+\cb3             \cf12 \strokec12 if\cf0 \strokec5  (totalPaginas <= \cf14 \strokec14 1\cf0 \strokec5 ) \cf12 \strokec12 return\cf0 \strokec5 ;\cb1 \
+\
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  prevButton = document.createElement(\cf13 \strokec13 'button'\cf0 \strokec5 );\cb1 \
+\cb3             prevButton.innerText = \cf13 \strokec13 'Anterior'\cf0 \strokec5 ;\cb1 \
+\cb3             prevButton.disabled = paginaAtual === \cf14 \strokec14 1\cf0 \strokec5 ;\cb1 \
+\cb3             prevButton.className = \cf13 \strokec13 'px-3 py-1 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed'\cf0 \strokec5 ;\cb1 \
+\cb3             prevButton.addEventListener(\cf13 \strokec13 'click'\cf0 \strokec5 , () => renderizarPagina(paginaAtual - \cf14 \strokec14 1\cf0 \strokec5 ));\cb1 \
+\cb3             paginationDiv.appendChild(prevButton);\cb1 \
+\
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  pageIndicator = document.createElement(\cf13 \strokec13 'span'\cf0 \strokec5 );\cb1 \
+\cb3             pageIndicator.innerText = \cf13 \strokec13 `P\'e1gina \cf0 \strokec5 $\{paginaAtual\}\cf13 \strokec13  de \cf0 \strokec5 $\{totalPaginas\}\cf13 \strokec13 `\cf0 \strokec5 ;\cb1 \
+\cb3             pageIndicator.className = \cf13 \strokec13 'px-3 py-1 text-sm'\cf0 \strokec5 ;\cb1 \
+\cb3             paginationDiv.appendChild(pageIndicator);\cb1 \
+\cb3             \cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  nextButton = document.createElement(\cf13 \strokec13 'button'\cf0 \strokec5 );\cb1 \
+\cb3             nextButton.innerText = \cf13 \strokec13 'Pr\'f3xima'\cf0 \strokec5 ;\cb1 \
+\cb3             nextButton.disabled = paginaAtual === totalPaginas;\cb1 \
+\cb3             nextButton.className = \cf13 \strokec13 'px-3 py-1 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed'\cf0 \strokec5 ;\cb1 \
+\cb3             nextButton.addEventListener(\cf13 \strokec13 'click'\cf0 \strokec5 , () => renderizarPagina(paginaAtual + \cf14 \strokec14 1\cf0 \strokec5 ));\cb1 \
+\cb3             paginationDiv.appendChild(nextButton);\cb1 \
+\cb3         \};\cb1 \
+\
+\
+\cb3         \cf9 \strokec9 // --- L\'d3GICA DO PASSO 2: EXTRA\'c7\'c3O DE VOTOS ---\cf0 \cb1 \strokec5 \
+\
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  fetchButton = document.getElementById(\cf13 \strokec13 'fetchButton'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  downloadButton = document.getElementById(\cf13 \strokec13 'downloadButton'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  votacaoIdInput = document.getElementById(\cf13 \strokec13 'votacaoId'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  tableBody = document.getElementById(\cf13 \strokec13 'votos-table-body'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  loader = document.getElementById(\cf13 \strokec13 'loader'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  errorMessage = document.getElementById(\cf13 \strokec13 'error-message'\cf0 \strokec5 );\cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  resultsSection = document.getElementById(\cf13 \strokec13 'results'\cf0 \strokec5 );\cb1 \
+\
+\cb3         \cf12 \strokec12 let\cf0 \strokec5  dadosVotacao = [];\cb1 \
+\
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  buscarDadosVotos = \cf12 \strokec12 async\cf0 \strokec5  () => \{\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  idVotacao = votacaoIdInput.value.trim();\cb1 \
+\cb3             \cf12 \strokec12 if\cf0 \strokec5  (!idVotacao) \{\cb1 \
+\cb3                 exibirErroVotos(\cf13 \strokec13 'Por favor, insira um ID de vota\'e7\'e3o.'\cf0 \strokec5 );\cb1 \
+\cb3                 \cf12 \strokec12 return\cf0 \strokec5 ;\cb1 \
+\cb3             \}\cb1 \
+\
+\cb3             loader.classList.remove(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             resultsSection.classList.add(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             errorMessage.classList.add(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             tableBody.innerHTML = \cf13 \strokec13 ''\cf0 \strokec5 ;\cb1 \
+\cb3             dadosVotacao = [];\cb1 \
+\
+\cb3             \cf12 \strokec12 try\cf0 \strokec5  \{\cb1 \
+\cb3                 \cf9 \strokec9 // CORRE\'c7\'c3O: Removido o proxy e usando um caminho relativo.\cf0 \cb1 \strokec5 \
+\cb3                 \cf9 \strokec9 // Isso funcionar\'e1 em conjunto com o arquivo vercel.json.\cf0 \cb1 \strokec5 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  apiUrl = \cf13 \strokec13 `/api/votacoes/\cf0 \strokec5 $\{idVotacao\}\cf13 \strokec13 /votos`\cf0 \strokec5 ;\cb1 \
+\
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  response = \cf12 \strokec12 await\cf0 \strokec5  fetch(apiUrl);\cb1 \
+\
+\cb3                 \cf12 \strokec12 if\cf0 \strokec5  (!response.ok) \{\cb1 \
+\cb3                     \cf12 \strokec12 throw\cf0 \strokec5  \cf12 \strokec12 new\cf0 \strokec5  \cf15 \strokec15 Error\cf0 \strokec5 (\cf13 \strokec13 `Erro na API: \cf0 \strokec5 $\{response.status\}\cf13 \strokec13  - \cf0 \strokec5 $\{response.statusText\}\cf13 \strokec13 . Verifique se o ID est\'e1 correto.`\cf0 \strokec5 );\cb1 \
+\cb3                 \}\cb1 \
+\cb3                 \cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  data = \cf12 \strokec12 await\cf0 \strokec5  response.json();\cb1 \
+\cb3                 dadosVotacao = data.dados;\cb1 \
+\
+\cb3                 \cf12 \strokec12 if\cf0 \strokec5  (dadosVotacao.length === \cf14 \strokec14 0\cf0 \strokec5 ) \{\cb1 \
+\cb3                     exibirErroVotos(\cf13 \strokec13 'Nenhum dado encontrado para esta vota\'e7\'e3o. O ID pode estar incorreto ou a vota\'e7\'e3o n\'e3o possui votos registrados.'\cf0 \strokec5 );\cb1 \
+\cb3                     \cf12 \strokec12 return\cf0 \strokec5 ;\cb1 \
+\cb3                 \}\cb1 \
+\
+\cb3                 renderizarTabelaVotos(dadosVotacao);\cb1 \
+\cb3                 resultsSection.classList.remove(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\
+\cb3             \} \cf12 \strokec12 catch\cf0 \strokec5  (error) \{\cb1 \
+\cb3                 console.error(\cf13 \strokec13 'Falha ao buscar dados dos votos:'\cf0 \strokec5 , error);\cb1 \
+\cb3                 exibirErroVotos(\cf13 \strokec13 'Ocorreu um erro ao buscar os dados dos votos. Verifique a conex\'e3o ou tente novamente mais tarde.'\cf0 \strokec5 );\cb1 \
+\cb3             \} \cf12 \strokec12 finally\cf0 \strokec5  \{\cb1 \
+\cb3                 loader.classList.add(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             \}\cb1 \
+\cb3         \};\cb1 \
+\cb3         \cb1 \
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  exibirErroVotos = (mensagem) => \{\cb1 \
+\cb3             errorMessage.textContent = mensagem;\cb1 \
+\cb3             errorMessage.classList.remove(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3             resultsSection.classList.add(\cf13 \strokec13 'hidden'\cf0 \strokec5 );\cb1 \
+\cb3         \};\cb1 \
+\
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  renderizarTabelaVotos = (votos) => \{\cb1 \
+\cb3             tableBody.innerHTML = \cf13 \strokec13 ''\cf0 \strokec5 ;\cb1 \
+\cb3             votos.forEach(voto => \{\cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  tr = document.createElement(\cf13 \strokec13 'tr'\cf0 \strokec5 );\cb1 \
+\cb3                 tr.className = \cf13 \strokec13 'hover:bg-gray-50'\cf0 \strokec5 ;\cb1 \
+\cb3                 \cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  nome = voto.deputado_.nome;\cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  tipoVoto = voto.tipoVoto;\cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  partido = voto.deputado_.siglaPartido;\cb1 \
+\cb3                 \cf12 \strokec12 const\cf0 \strokec5  uf = voto.deputado_.siglaUf;\cb1 \
+\
+\cb3                 tr.innerHTML = \cf13 \strokec13 `\cf0 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf13 \cb3 \strokec13                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">\cf0 \strokec5 $\{nome\}\cf13 \strokec13 </td>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">\cf0 \strokec5 $\{tipoVoto\}\cf13 \strokec13 </td>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">\cf0 \strokec5 $\{partido\}\cf13 \strokec13 </td>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">\cf0 \strokec5 $\{uf\}\cf13 \strokec13 </td>\cf0 \cb1 \strokec5 \
+\cf13 \cb3 \strokec13                 `\cf0 \strokec5 ;\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3                 tableBody.appendChild(tr);\cb1 \
+\cb3             \});\cb1 \
+\cb3         \};\cb1 \
+\
+\cb3         \cf12 \strokec12 const\cf0 \strokec5  baixarPlanilha = () => \{\cb1 \
+\cb3             \cf12 \strokec12 if\cf0 \strokec5  (dadosVotacao.length === \cf14 \strokec14 0\cf0 \strokec5 ) \{\cb1 \
+\cb3                 alert(\cf13 \strokec13 'N\'e3o h\'e1 dados para baixar.'\cf0 \strokec5 );\cb1 \
+\cb3                 \cf12 \strokec12 return\cf0 \strokec5 ;\cb1 \
+\cb3             \}\cb1 \
+\
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  dadosParaPlanilha = dadosVotacao.map(voto => (\{\cb1 \
+\cb3                 \cf15 \strokec15 Nome\cf0 \strokec5 : voto.deputado_.nome,\cb1 \
+\cb3                 \cf15 \strokec15 Voto\cf0 \strokec5 : voto.tipoVoto,\cb1 \
+\cb3                 \cf15 \strokec15 Partido\cf0 \strokec5 : voto.deputado_.siglaPartido,\cb1 \
+\cb3                 \cf15 \strokec15 UF\cf0 \strokec5 : voto.deputado_.siglaUf\cb1 \
+\cb3             \}));\cb1 \
+\
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  worksheet = \cf15 \strokec15 XLSX\cf0 \strokec5 .utils.json_to_sheet(dadosParaPlanilha);\cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  workbook = \cf15 \strokec15 XLSX\cf0 \strokec5 .utils.book_new();\cb1 \
+\cb3             \cf15 \strokec15 XLSX\cf0 \strokec5 .utils.book_append_sheet(workbook, worksheet, \cf13 \strokec13 "Votos"\cf0 \strokec5 );\cb1 \
+\
+\cb3             worksheet[\cf13 \strokec13 "!cols"\cf0 \strokec5 ] = [ \{ wch: \cf14 \strokec14 30\cf0 \strokec5  \}, \{ wch: \cf14 \strokec14 15\cf0 \strokec5  \}, \{ wch: \cf14 \strokec14 10\cf0 \strokec5  \}, \{ wch: \cf14 \strokec14 5\cf0 \strokec5  \} ];\cb1 \
+\cb3             \cb1 \
+\cb3             \cf12 \strokec12 const\cf0 \strokec5  idVotacao = votacaoIdInput.value.trim();\cb1 \
+\cb3             \cf15 \strokec15 XLSX\cf0 \strokec5 .writeFile(workbook, \cf13 \strokec13 `votacao_\cf0 \strokec5 $\{idVotacao || \cf13 \strokec13 'export'\cf0 \strokec5 \}\cf13 \strokec13 .xlsx`\cf0 \strokec5 );\cb1 \
+\cb3         \};\cb1 \
+\
+\cb3         fetchButton.addEventListener(\cf13 \strokec13 'click'\cf0 \strokec5 , buscarDadosVotos);\cb1 \
+\cb3         downloadButton.addEventListener(\cf13 \strokec13 'click'\cf0 \strokec5 , baixarPlanilha);\cb1 \
+\cb3         \cb1 \
+\cb3         votacaoIdInput.addEventListener(\cf13 \strokec13 'keyup'\cf0 \strokec5 , (event) => \{\cb1 \
+\cb3             \cf12 \strokec12 if\cf0 \strokec5  (event.key === \cf13 \strokec13 'Enter'\cf0 \strokec5 ) \{\cb1 \
+\cb3                 buscarDadosVotos();\cb1 \
+\cb3             \}\cb1 \
+\cb3         \});\cb1 \
+\
+\cb3     \cf6 \strokec6 </\cf7 \strokec7 script\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 </\cf7 \strokec7 body\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\cf6 \cb3 \strokec6 </\cf7 \strokec7 html\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
+\
+}
