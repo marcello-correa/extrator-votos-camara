@@ -140,8 +140,9 @@
         const extrairVotacaoIdDaPagina = async (url) => {
             let fetchUrl;
             if (IS_VERCEL) {
-                const urlParams = new URL(url).search; // Pega "?reuniao=..."
-                fetchUrl = `/scrape${urlParams}`;
+                // CORREÇÃO: Captura o caminho completo e os parâmetros para uma regra de rewrite mais robusta.
+                const pathWithQuery = new URL(url).pathname + new URL(url).search;
+                fetchUrl = `/scrape${pathWithQuery}`;
             } else {
                 fetchUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
             }

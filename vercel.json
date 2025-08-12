@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/scrape",
-      "destination": "https://www.camara.leg.br/presenca-comissoes/votacao-portal"
+      "source": "/scrape/:path*",
+      "destination": "https://www.camara.leg.br/:path*"
     },
     {
       "source": "/api/:path*",
