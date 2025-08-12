@@ -120,13 +120,13 @@
             try {
                 const infoPagina = await extrairInfoDaPagina(portalUrl);
                 if (!infoPagina) {
-                    throw new Error('Não foi possível extrair informações de data e descrição da página.');
+                    throw new Error('Não foi possível extrair informações de data e descrição da página. Verifique a URL.');
                 }
 
                 loaderText.textContent = '2/3: Buscando votações do dia...';
                 const votacaoId = await encontrarIdPorDataEDescricao(infoPagina);
                 if (!votacaoId) {
-                    throw new Error('Não foi possível encontrar uma votação correspondente na API de Dados Abertos.');
+                    throw new Error('Não foi possível encontrar uma votação correspondente na API de Dados Abertos para a data e descrição encontradas.');
                 }
                 
                 loaderText.textContent = '3/3: Extraindo votos...';
@@ -156,13 +156,22 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlText, "text/html");
 
-            const dataElement = Array.from(doc.querySelectorAll('.reuniaoDataLocal li')).find(li => li.textContent.includes('Data/Local'));
-            const dataMatch = dataElement ? dataElement.textContent.match(/(\d{2}\/\d{2}\/\d{4})/) : null;
+            // Extração de data mais robusta
+            const allListItems = doc.querySelectorAll('li');
+            const dataElement = Array.from(allListItems).find(li => li.textContent.includes('Data/Local'));
+            const dataMatch = dataElement ? dataElement.textContent.match(/(\d{2})\/(\d{2})\/(\d{4})/) : null;
             if (!dataMatch) return null;
-            const [dia, mes, ano] = dataMatch[1].split('/');
+            
+            const [, dia, mes, ano] = dataMatch;
             const dataFormatada = `${ano}-${mes}-${dia}`;
 
-            const selectedOption = doc.querySelector('#dropDownReunioes option[selected]');
+            // Extração de descrição mais robusta, baseada no parâmetro da URL
+            const urlParams = new URL(url);
+            const itemVotacaoId = urlParams.searchParams.get('itemVotacao');
+            if (!itemVotacaoId) {
+                 throw new Error('A URL fornecida não contém o parâmetro "itemVotacao", que é necessário para identificar a pauta.');
+            }
+            const selectedOption = doc.querySelector(`#dropDownReunioes option[value="${itemVotacaoId}"]`);
             if (!selectedOption) return null;
             const descricao = selectedOption.textContent.trim();
 
@@ -180,13 +189,23 @@
             }
 
             const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error(`Erro ao buscar votações por data (Status: ${response.status}).`);
+            if (!response.ok) {
+                throw new Error(`Erro ao buscar votações por data (Status: ${response.status}).`);
+            }
 
             const data = await response.json();
             const votacoesDoDia = data.dados;
 
-            // Limpa a descrição para uma comparação mais flexível
-            const limparString = (str) => str.replace(/\s+/g, ' ').replace(/\(Nominal\)|\(Simbólica\)/gi, '').trim();
+            const limparString = (str) => {
+                if (!str) return '';
+                return str
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
+                    .toLowerCase()
+                    .replace(/\(nominal\)|\(simb[oó]lica\)/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+            
             const descricaoLimpa = limparString(descricao);
 
             const votacaoEncontrada = votacoesDoDia.find(votacao => {
