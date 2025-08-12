@@ -123,7 +123,7 @@
             try {
                 const votacaoId = await extrairVotacaoIdDaPagina(portalUrl);
                 if (!votacaoId) {
-                    throw new Error('Não foi possível encontrar o ID da votação na página. Verifique se a URL está correta e se a página contém um link para os "Dados Abertos".');
+                    throw new Error('Não foi possível encontrar o ID da votação na página. Verifique se a URL está correta e se a página contém um link para os "Dados Abertos". (Verifique o Console do Desenvolvedor para mais detalhes).');
                 }
                 
                 loaderText.textContent = 'Buscando dados dos votos...';
@@ -140,7 +140,6 @@
         const extrairVotacaoIdDaPagina = async (url) => {
             let fetchUrl;
             if (IS_VERCEL) {
-                // CORREÇÃO: Captura o caminho completo e os parâmetros para uma regra de rewrite mais robusta.
                 const pathWithQuery = new URL(url).pathname + new URL(url).search;
                 fetchUrl = `/scrape${pathWithQuery}`;
             } else {
@@ -155,6 +154,16 @@
             
             const regex = /https:\/\/dadosabertos\.camara\.leg\.br\/api\/v2\/votacoes\/([0-9-]+)/;
             const match = html.match(regex);
+
+            // ADICIONADO: Lógica de diagnóstico
+            if (!match) {
+                console.error("--- INÍCIO DO DEBUG ---");
+                console.error("O HTML recebido da página da Câmara não contém o ID esperado.");
+                console.error("Isso pode significar que o servidor da Câmara bloqueou a leitura ou retornou uma página de erro.");
+                console.log("Conteúdo recebido:");
+                console.log(html);
+                console.error("--- FIM DO DEBUG ---");
+            }
             
             return match ? match[1] : null;
         };
