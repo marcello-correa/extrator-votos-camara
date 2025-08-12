@@ -92,25 +92,7 @@
     </div>
 
     <script>
-        // --- LÓGICA DE ADAPTAÇÃO DE AMBIENTE ---
-        
         const IS_VERCEL = window.location.hostname.endsWith('.vercel.app');
-
-        const getApiUrl = (endpoint) => {
-            if (IS_VERCEL) {
-                return `/api${endpoint}`;
-            } else {
-                const baseUrl = 'https://dadosabertos.camara.leg.br/api/v2';
-                const fullUrl = `${baseUrl}${endpoint}`;
-                // CORREÇÃO: Trocando para um proxy mais estável para o ambiente de testes.
-                return `https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
-            }
-        };
-        
-        // Simplificado: esta função agora funciona para ambos os ambientes.
-        const parseApiResponse = async (response) => {
-            return response.json();
-        };
 
         // --- ELEMENTOS DA UI ---
         const fetchFromUrlButton = document.getElementById('fetchFromUrlButton');
@@ -122,21 +104,17 @@
         const tableBody = document.getElementById('votos-table-body');
         const downloadButton = document.getElementById('downloadButton');
 
-        let dadosVotacao = []; // Armazena os dados para o download
+        let dadosVotacao = [];
 
         // --- FUNÇÕES PRINCIPAIS ---
 
-        /**
-         * Inicia o processo: pega a URL, encontra o ID da votação e busca os votos.
-         */
         const handleFetchFromUrl = async () => {
             const portalUrl = portalUrlInput.value.trim();
-            if (!portalUrl) {
-                exibirErro('Por favor, insira uma URL válida do portal da Câmara.');
+            if (!portalUrl.startsWith('https://www.camara.leg.br/')) {
+                exibirErro('Por favor, insira uma URL válida do portal da Câmara (camara.leg.br).');
                 return;
             }
 
-            // Reseta a UI
             resultsSection.classList.add('hidden');
             errorMessage.classList.add('hidden');
             loaderText.textContent = 'Lendo a página do portal...';
@@ -153,55 +131,48 @@
 
             } catch (error) {
                 console.error('Falha no processo:', error);
-                 if (error.message.includes('Failed to fetch')) {
-                    exibirErro('Erro de rede. O serviço de proxy pode estar temporariamente indisponível. Por favor, tente novamente mais tarde.');
-                } else {
-                    exibirErro(error.message);
-                }
+                exibirErro(error.message);
             } finally {
                 loader.classList.add('hidden');
             }
         };
 
-        /**
-         * "Raspa" a página do portal da Câmara para encontrar o ID da votação da API.
-         * @param {string} url - A URL da página de votação do portal.
-         * @returns {Promise<string|null>} O ID da votação ou null se não for encontrado.
-         */
         const extrairVotacaoIdDaPagina = async (url) => {
-            // Usa um proxy para acessar o conteúdo da página externa
-            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-            const response = await fetch(proxyUrl);
+            let fetchUrl;
+            if (IS_VERCEL) {
+                const urlParams = new URL(url).search; // Pega "?reuniao=..."
+                fetchUrl = `/scrape${urlParams}`;
+            } else {
+                fetchUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+            }
+
+            const response = await fetch(fetchUrl);
             if (!response.ok) {
-                throw new Error(`Não foi possível acessar a URL do portal via proxy (Status: ${response.status}).`);
+                throw new Error(`Não foi possível acessar a URL do portal (Status: ${response.status}).`);
             }
             const html = await response.text();
-
-            if (!html) {
-                 throw new Error('O serviço de proxy não retornou o conteúdo da página. Pode estar temporariamente fora do ar.');
-            }
-
-            // A regex procura pelo link que leva à API de Dados Abertos para encontrar o ID correto.
+            
             const regex = /https:\/\/dadosabertos\.camara\.leg\.br\/api\/v2\/votacoes\/([0-9-]+)/;
             const match = html.match(regex);
             
             return match ? match[1] : null;
         };
 
-        /**
-         * Busca os dados detalhados dos votos usando o ID da API.
-         * @param {string} votacaoId - O ID da votação encontrado.
-         */
         const buscarDadosVotos = async (votacaoId) => {
-            const endpoint = `/votacoes/${votacaoId}/votos`;
-            const apiUrl = getApiUrl(endpoint);
-            const response = await fetch(apiUrl);
-
-            if (!response.ok) {
-                throw new Error(`Erro na API de Dados Abertos: ${response.status}`);
+            let apiUrl;
+            if (IS_VERCEL) {
+                apiUrl = `/api/votacoes/${votacaoId}/votos`;
+            } else {
+                const fullUrl = `https://dadosabertos.camara.leg.br/api/v2/votacoes/${votacaoId}/votos`;
+                apiUrl = `https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
             }
             
-            const data = await parseApiResponse(response);
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`Erro na API de Dados Abertos (Status: ${response.status}).`);
+            }
+            
+            const data = await response.json();
             dadosVotacao = data.dados;
 
             if (!dadosVotacao || dadosVotacao.length === 0) {
@@ -217,7 +188,6 @@
         const exibirErro = (mensagem) => {
             errorMessage.textContent = mensagem;
             errorMessage.classList.remove('hidden');
-            resultsSection.classList.add('hidden');
         };
 
         const renderizarTabelaVotos = (votos) => {

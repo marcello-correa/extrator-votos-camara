@@ -1,12 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/api/votacoes",
-      "destination": "https://dadosabertos.camara.leg.br/api/v2/votacoes"
+      "source": "/scrape",
+      "destination": "https://www.camara.leg.br/presenca-comissoes/votacao-portal"
     },
     {
-      "source": "/api/votacoes/:id/votos",
-      "destination": "https://dadosabertos.camara.leg.br/api/v2/votacoes/:id/votos"
+      "source": "/api/:path*",
+      "destination": "https://dadosabertos.camara.leg.br/api/v2/:path*"
     }
   ]
 }
