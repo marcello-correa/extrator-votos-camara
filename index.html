@@ -94,7 +94,6 @@
     <script>
         const IS_VERCEL = window.location.hostname.endsWith('.vercel.app');
 
-        // --- ELEMENTOS DA UI ---
         const fetchFromUrlButton = document.getElementById('fetchFromUrlButton');
         const portalUrlInput = document.getElementById('portalUrlInput');
         const loader = document.getElementById('loader');
@@ -106,8 +105,6 @@
 
         let dadosVotacao = [];
 
-        // --- FUNÇÕES PRINCIPAIS ---
-
         const handleFetchFromUrl = async () => {
             const portalUrl = portalUrlInput.value.trim();
             if (!portalUrl.startsWith('https://www.camara.leg.br/')) {
@@ -117,16 +114,22 @@
 
             resultsSection.classList.add('hidden');
             errorMessage.classList.add('hidden');
-            loaderText.textContent = 'Lendo a página do portal...';
+            loaderText.textContent = '1/3: Lendo página do portal...';
             loader.classList.remove('hidden');
 
             try {
-                const votacaoId = await extrairVotacaoIdDaPagina(portalUrl);
+                const infoPagina = await extrairInfoDaPagina(portalUrl);
+                if (!infoPagina) {
+                    throw new Error('Não foi possível extrair informações de data e descrição da página.');
+                }
+
+                loaderText.textContent = '2/3: Buscando votações do dia...';
+                const votacaoId = await encontrarIdPorDataEDescricao(infoPagina);
                 if (!votacaoId) {
-                    throw new Error('Não foi possível encontrar o ID da votação na página. Verifique se a URL está correta e se a página contém um link para os "Dados Abertos". (Verifique o Console do Desenvolvedor para mais detalhes).');
+                    throw new Error('Não foi possível encontrar uma votação correspondente na API de Dados Abertos.');
                 }
                 
-                loaderText.textContent = 'Buscando dados dos votos...';
+                loaderText.textContent = '3/3: Extraindo votos...';
                 await buscarDadosVotos(votacaoId);
 
             } catch (error) {
@@ -137,7 +140,7 @@
             }
         };
 
-        const extrairVotacaoIdDaPagina = async (url) => {
+        const extrairInfoDaPagina = async (url) => {
             let fetchUrl;
             if (IS_VERCEL) {
                 const pathWithQuery = new URL(url).pathname + new URL(url).search;
@@ -147,40 +150,64 @@
             }
 
             const response = await fetch(fetchUrl);
-            if (!response.ok) {
-                throw new Error(`Não foi possível acessar a URL do portal (Status: ${response.status}).`);
-            }
-            const html = await response.text();
+            if (!response.ok) throw new Error(`Não foi possível acessar a URL do portal (Status: ${response.status}).`);
             
-            const regex = /https:\/\/dadosabertos\.camara\.leg\.br\/api\/v2\/votacoes\/([0-9-]+)/;
-            const match = html.match(regex);
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, "text/html");
 
-            // ADICIONADO: Lógica de diagnóstico
-            if (!match) {
-                console.error("--- INÍCIO DO DEBUG ---");
-                console.error("O HTML recebido da página da Câmara não contém o ID esperado.");
-                console.error("Isso pode significar que o servidor da Câmara bloqueou a leitura ou retornou uma página de erro.");
-                console.log("Conteúdo recebido:");
-                console.log(html);
-                console.error("--- FIM DO DEBUG ---");
+            const dataElement = Array.from(doc.querySelectorAll('.reuniaoDataLocal li')).find(li => li.textContent.includes('Data/Local'));
+            const dataMatch = dataElement ? dataElement.textContent.match(/(\d{2}\/\d{2}\/\d{4})/) : null;
+            if (!dataMatch) return null;
+            const [dia, mes, ano] = dataMatch[1].split('/');
+            const dataFormatada = `${ano}-${mes}-${dia}`;
+
+            const selectedOption = doc.querySelector('#dropDownReunioes option[selected]');
+            if (!selectedOption) return null;
+            const descricao = selectedOption.textContent.trim();
+
+            return { dataVotacao: dataFormatada, descricao };
+        };
+
+        const encontrarIdPorDataEDescricao = async ({ dataVotacao, descricao }) => {
+            let apiUrl;
+            const endpoint = `/votacoes?dataInicio=${dataVotacao}&dataFim=${dataVotacao}&ordem=ASC&ordenarPor=dataHoraVotacao&itens=100`;
+            if (IS_VERCEL) {
+                apiUrl = `/api${endpoint}`;
+            } else {
+                const fullUrl = `https://dadosabertos.camara.leg.br/api/v2${endpoint}`;
+                apiUrl = `https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
             }
-            
-            return match ? match[1] : null;
+
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error(`Erro ao buscar votações por data (Status: ${response.status}).`);
+
+            const data = await response.json();
+            const votacoesDoDia = data.dados;
+
+            // Limpa a descrição para uma comparação mais flexível
+            const limparString = (str) => str.replace(/\s+/g, ' ').replace(/\(Nominal\)|\(Simbólica\)/gi, '').trim();
+            const descricaoLimpa = limparString(descricao);
+
+            const votacaoEncontrada = votacoesDoDia.find(votacao => {
+                return limparString(votacao.descricao) === descricaoLimpa;
+            });
+
+            return votacaoEncontrada ? votacaoEncontrada.id : null;
         };
 
         const buscarDadosVotos = async (votacaoId) => {
             let apiUrl;
+            const endpoint = `/votacoes/${votacaoId}/votos`;
             if (IS_VERCEL) {
-                apiUrl = `/api/votacoes/${votacaoId}/votos`;
+                apiUrl = `/api${endpoint}`;
             } else {
-                const fullUrl = `https://dadosabertos.camara.leg.br/api/v2/votacoes/${votacaoId}/votos`;
+                const fullUrl = `https://dadosabertos.camara.leg.br/api/v2${endpoint}`;
                 apiUrl = `https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
             }
             
             const response = await fetch(apiUrl);
-            if (!response.ok) {
-                throw new Error(`Erro na API de Dados Abertos (Status: ${response.status}).`);
-            }
+            if (!response.ok) throw new Error(`Erro na API de Dados Abertos (Status: ${response.status}).`);
             
             const data = await response.json();
             dadosVotacao = data.dados;
@@ -192,8 +219,6 @@
             renderizarTabelaVotos(dadosVotacao);
             resultsSection.classList.remove('hidden');
         };
-
-        // --- FUNÇÕES AUXILIARES ---
 
         const exibirErro = (mensagem) => {
             errorMessage.textContent = mensagem;
@@ -244,7 +269,6 @@
             XLSX.writeFile(workbook, `votacao_${idVotacao}.xlsx`);
         };
 
-        // --- EVENT LISTENERS ---
         fetchFromUrlButton.addEventListener('click', handleFetchFromUrl);
         downloadButton.addEventListener('click', baixarPlanilha);
         
